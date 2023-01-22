@@ -10,6 +10,8 @@ const countryInfo = document.querySelector('.country-info');
 
 function inputHandler(event) {
   let searchValue = event.target.value.trim();
+  countryList.innerHTML = null;
+  countryInfo.innerHTML = null;
   if (searchValue.length > 0) {
     fetchCountries(searchValue)
       .then(result => makeCountriesList(result))
@@ -21,8 +23,6 @@ function inputHandler(event) {
 }
 
 function makeCountriesList(countries) {
-  countryList.innerHTML = null;
-  countryInfo.innerHTML = null;
   if (countries.length > 10) {
     Notiflix.Notify.info(
       'Too many matches found. Please enter a more specific name.'
@@ -35,14 +35,14 @@ function makeCountriesList(countries) {
     });
   } else if (countries.length === 1) {
     Array.from(countries).map(country => {
-      const languagesStringified = Object.values(country.languages);
       let countryElement = document.createElement('li');
+      const languagesStringified = Object.values(country.languages);
       countryElement.innerHTML = `<ul><li><img src="${country.flags.svg}" class="country-list__flag"><span class="country-list__name">${country.name.official}</span></li>
     <li><b>Capital:</b> ${country.capital}</li>
     <li><b>Population:</b> ${country.population}</li>
     <li><b>Languages:</b> ${languagesStringified}</li>
     </ul>`;
-      countryList.appendChild(countryElement);
+      countryInfo.appendChild(countryElement);
     });
   }
 }
